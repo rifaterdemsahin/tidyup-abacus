@@ -1,0 +1,33 @@
+# fly.toml — TidyUp Abacus on Fly.io
+# Docs: https://fly.io/docs/reference/configuration/
+
+app = "tidyup-abacus"
+primary_region = "lhr"          # London — change to nearest: iad, sjc, fra, sin …
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT            = "3000"
+  NODE_ENV        = "production"
+  NEXT_TELEMETRY_DISABLED = "1"
+  # Non-secret env vars go here.
+  # Secrets (DATABASE_URL, NEXTAUTH_SECRET, AWS_*) are injected by Doppler —
+  # never put them in this file.
+
+[http_service]
+  internal_port        = 3000
+  force_https          = true
+  auto_stop_machines   = true
+  auto_start_machines  = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type       = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+[[vm]]
+  memory = "1gb"     # Prisma generate + Next.js build needs headroom
+  cpu_kind = "shared"
+  cpus = 1

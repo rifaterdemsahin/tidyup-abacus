@@ -23,3 +23,6 @@ nextjs_space/tsconfig.tsbuildinfo
 # Yarn
 nextjs_space/.yarn/cache
 nextjs_space/.yarn/unplugged
+
+# Doppler — the token file is created by `doppler setup` and is machine-local
+nextjs_space/.doppler-token

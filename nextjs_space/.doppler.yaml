@@ -1,0 +1,5 @@
+# Doppler project config
+# Docs: https://docs.doppler.com/docs/cli
+setup:
+  project: tidyup-abacus
+  config: prd          # matches your Doppler environment name (prd / stg / dev)
