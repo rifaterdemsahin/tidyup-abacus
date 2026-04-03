@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment — never commit credentials
+nextjs_space/.env
+nextjs_space/.env.local
+nextjs_space/.env*.local
+
+# Next.js build output
+nextjs_space/.next/
+nextjs_space/out/
+
+# Dependencies
+nextjs_space/node_modules/
+
+# Prisma generated client
+nextjs_space/node_modules/.prisma/
+
+# TypeScript build info
+nextjs_space/tsconfig.tsbuildinfo
+
+# Yarn
+nextjs_space/.yarn/cache
+nextjs_space/.yarn/unplugged
