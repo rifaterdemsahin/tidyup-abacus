@@ -23,23 +23,33 @@
 - [x] `.doppler.yaml` — project pointer
 
 ### Doppler Setup
-- [ ] Create project `tidyup-abacus` in Doppler
-- [ ] Add secrets to config `prd`
-- [ ] Verify secrets with `doppler secrets`
+- [x] Create project `tidyup-abacus` in Doppler
+- [x] Add secrets to config `prd` (DATABASE_URL, NEXTAUTH_*, AWS_*, NODE_ENV)
+- [x] Verify secrets with `doppler secrets`
 
 ### Fly.io Setup
-- [ ] Create app with `fly launch`
-- [ ] Import secrets from Doppler → Fly
-- [ ] Set `NEXTAUTH_URL` to `https://tidyup-abacus.fly.dev`
+- [x] Create app with `fly launch` — auto-provisioned Fly Postgres + Tigris S3
+- [x] Import secrets from Doppler → Fly (via `fly secrets set`)
+- [x] Set `NEXTAUTH_URL` to `https://tidyup-abacus.fly.dev`
 
 ### Database
-- [ ] Confirm DATABASE_URL is reachable from Fly.io
-- [ ] Run `prisma migrate deploy` on first deploy
+- [x] Fly Postgres cluster `tidyup-abacus-db` provisioned (tidyup-abacus-db.flycast:5432)
+- [x] `prisma db push` runs via release_command on every deploy
 
 ### Deploy
-- [ ] `fly deploy` — build + push image
-- [ ] Verify app is running (`fly status`)
-- [ ] Open app (`fly open`)
+- [x] `fly deploy` — build + push image (120 MB, Node 20 Alpine)
+- [x] Verify app is running (`fly status` — 2 machines started in lhr)
+- [x] App live at https://tidyup-abacus.fly.dev ✓ (HTTP 200 after redirect to /login)
+
+---
+
+## Issues Fixed During Deploy
+
+| Issue | Root Cause | Fix |
+|---|---|---|
+| Prisma WASM missing in runner | Only copied `.bin/prisma`, not WASM sidecars | Copy entire `node_modules/.bin/` |
+| `server.js` not found | `outputFileTracingRoot: '../'` made standalone nest files under `app/` subpath | Removed `outputFileTracingRoot` from `next.config.js` |
+| Build cache served stale output | Schema fix not picked up | `fly deploy --no-cache` |
 
 ---
 
