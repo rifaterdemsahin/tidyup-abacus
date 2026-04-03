@@ -83,17 +83,12 @@ export async function getFileUrl(
   cloud_storage_path: string,
   isPublic: boolean
 ): Promise<string> {
-  if (isPublic) {
-    const endpoint = process.env.AWS_ENDPOINT_URL_S3 ?? `https://s3.${region}.amazonaws.com`;
-    return `${endpoint}/${bucketName}/${cloud_storage_path}`;
-  } else {
-    const command = new GetObjectCommand({
-      Bucket: bucketName,
-      Key: cloud_storage_path,
-      ResponseContentDisposition: "attachment"
-    });
-    return await getSignedUrl(s3Client, command, { expiresIn: 3600 });
-  }
+  const command = new GetObjectCommand({
+    Bucket: bucketName,
+    Key: cloud_storage_path,
+    ...(isPublic ? {} : { ResponseContentDisposition: "attachment" })
+  });
+  return await getSignedUrl(s3Client, command, { expiresIn: 3600 });
 }
 
 export async function deleteFile(cloud_storage_path: string): Promise<void> {
