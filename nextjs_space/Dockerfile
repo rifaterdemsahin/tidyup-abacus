@@ -41,12 +41,13 @@ COPY --from=builder /app/public            ./public
 COPY --from=builder /app/.next/standalone  ./
 COPY --from=builder /app/.next/static      ./.next/static
 
-# Prisma: generated client + schema (needed for db push at release time)
-COPY --from=builder /app/node_modules/.prisma       ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma        ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma         ./node_modules/prisma
-COPY --from=builder /app/node_modules/.bin/prisma    ./node_modules/.bin/prisma
-COPY --from=builder /app/prisma                      ./prisma
+# Prisma: generated client + CLI + schema (needed for release_command db push)
+COPY --from=builder /app/node_modules/.prisma   ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma   ./node_modules/@prisma
+COPY --from=builder /app/node_modules/prisma    ./node_modules/prisma
+# Copy entire .bin to include prisma WASM sidecars (prisma_schema_build_bg.wasm etc.)
+COPY --from=builder /app/node_modules/.bin      ./node_modules/.bin
+COPY --from=builder /app/prisma                 ./prisma
 
 # Startup script
 COPY --chown=nextjs:nodejs start.sh ./start.sh
