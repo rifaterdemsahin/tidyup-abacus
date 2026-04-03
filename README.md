@@ -1,5 +1,7 @@
 # TidyUp Abacus
 
+**Live app:** https://tidyup-abacus.fly.dev/dashboard
+
 A home management app built with Next.js for tracking household inventory, tasks, and locations. Built on [Abacus.AI](https://abacus.ai).
 
 ## Features
