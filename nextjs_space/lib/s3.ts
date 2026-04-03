@@ -84,7 +84,8 @@ export async function getFileUrl(
   isPublic: boolean
 ): Promise<string> {
   if (isPublic) {
-    return `https://${bucketName}.s3.${region}.amazonaws.com/${cloud_storage_path}`;
+    const endpoint = process.env.AWS_ENDPOINT_URL_S3 ?? `https://s3.${region}.amazonaws.com`;
+    return `${endpoint}/${bucketName}/${cloud_storage_path}`;
   } else {
     const command = new GetObjectCommand({
       Bucket: bucketName,
